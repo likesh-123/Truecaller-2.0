@@ -19,12 +19,12 @@ class PostgresDatabase {
           port: Number(process.env.DB_PORT),
           dialect: "postgres",
           pool: {
-            max: 10, // Max connections
-            min: 0, // Min connections
-            acquire: 30000, // Wait time for acquiring a connection
-            idle: 10000, // Time before a connection is released
+            max: 10,
+            min: 0,
+            acquire: 30000,
+            idle: 10000,
           },
-          logging: false, // Disable logging for production
+          logging: false,
         }
       );
     }
