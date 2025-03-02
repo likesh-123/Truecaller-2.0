@@ -28,8 +28,6 @@ export const registerUserService = async (
       pinCode,
     } = req.body;
 
-    console.log("req.body", req.body);
-
     if (!userName)
       return BaseResponse.validationError(res, "userName is required");
     if (!firstName)
@@ -57,8 +55,6 @@ export const registerUserService = async (
     const existingUser = await User.findOne({
       where: { phoneNumber: phoneNumber },
     });
-
-    console.log("existingUser", existingUser);
 
     if (existingUser)
       return BaseResponse.validationError(
@@ -100,64 +96,3 @@ export const registerUserService = async (
     return BaseResponse.internalServerError(res, err, err.message);
   }
 };
-
-// import { Request, Response } from "express";
-// import { AppDataSource } from "../../../config/database";
-// import { User } from "../entities/User";
-// import BaseResponse from "../../../utils/responses";
-// import bcrypt from "bcrypt";
-
-// export const registerUserService = async (
-//   req: Request,
-//   res: Response
-// ): Promise<Response> => {
-//   try {
-//     const {
-//       firstName,
-//       lastName,
-//       middleName,
-//       mobileNo,
-//       age,
-//       pinCode,
-//       aadharNumber,
-//       password,
-//     } = req.body;
-
-//     console.log("req.body", req.body);
-
-//     if (!firstName) return BaseResponse.validationError(res, "First Name is required");
-//     if (!lastName) return BaseResponse.validationError(res, "Last Name is required");
-//     if (!mobileNo) return BaseResponse.validationError(res, "Mobile number is required");
-//     if (!age) return BaseResponse.validationError(res, "Age is required");
-//     if (!pinCode) return BaseResponse.validationError(res, "Pincode is required");
-//     if (!aadharNumber) return BaseResponse.validationError(res, "Aadhar Number is required");
-//     if (!password) return BaseResponse.validationError(res, "Password is required");
-
-//     const userRepository = AppDataSource.getRepository(User);
-
-//     const existingUser = await userRepository.findOne({ where: { mobileNo } });
-//     if (existingUser) {
-//       return BaseResponse.validationError(res, "User with this phone number already exists");
-//     }
-
-//     const hashedPassword = await bcrypt.hash(password, 10);
-
-//     const newUser = userRepository.create({
-//       firstName,
-//       middleName: middleName || "",
-//       lastName,
-//       mobileNo,
-//       age,
-//       pinCode,
-//       aadharNumber,
-//       password: hashedPassword,
-//     });
-
-//     await userRepository.save(newUser);
-
-//     return BaseResponse.created(res, newUser, "User registered successfully");
-//   } catch (err: any) {
-//     console.error("Error in registerUserService:", err);
-//     return BaseResponse.internalServerError(res, err, err.message);
-//   }
-// };
