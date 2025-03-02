@@ -14,8 +14,6 @@ export const loginUserService = async (
   try {
     const { phoneNumber, password } = req.body;
 
-    console.log("req.body", req.body);
-
     if (!phoneNumber)
       return BaseResponse.validationError(res, "Phone Number is required");
     if (!password)

@@ -1,13 +1,9 @@
 import { Router } from "express";
-import asyncHandler from "../utils/helpers/asyncHandler";
+import asyncHandler from "../utils/helpers/async-handler";
+import { createContactService } from "../modules/contact/services/create-contact-service";
 
 const userRouter = Router();
 
-userRouter.get(
-  "/get-vaccination/:userId",
-  asyncHandler(async (req, res) => {
-    // getVaccineByUserService(req, res);
-  })
-);
+userRouter.post("/create-contact", asyncHandler(createContactService));
 
 export default userRouter;

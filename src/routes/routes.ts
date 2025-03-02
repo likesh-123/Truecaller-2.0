@@ -1,7 +1,7 @@
 import { Router } from "express";
 import userRouter from "./user-routes";
 import authenticateToken from "../modules/user/services/authenticate-user-service";
-import asyncHandler from "../utils/helpers/asyncHandler";
+import asyncHandler from "../utils/helpers/async-handler";
 import { registerUserService } from "../modules/user/services/register-user-service";
 import { loginUserService } from "../modules/user/services/login-user-service";
 
