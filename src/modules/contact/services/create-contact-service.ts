@@ -26,6 +26,8 @@ export const createContactService = async (
       userId: req.token.userId,
     };
 
+    contactManager.addContact(req.token.userId, phoneNumber);
+
     const newContact = await Contact.create(contactData);
     return BaseResponse.created(
       res,
