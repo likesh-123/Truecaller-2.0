@@ -2,6 +2,7 @@ import { Response } from "express";
 import BaseResponse from "../../../utils/responses";
 import Contact from "../models/contact-models";
 import AuthenticatedRequest from "../../../utils/helpers/authenticated-request";
+import BloomFilterManager from "../../../config/bloom-filter/bloom-filter-mapper";
 
 export const createContactService = async (
   req: AuthenticatedRequest,
@@ -27,6 +28,10 @@ export const createContactService = async (
     };
 
     const newContact = await Contact.create(contactData);
+
+    const bloomFilter = BloomFilterManager.getOrCreateBloomFilter("CONTACT");
+    await bloomFilter.add(phoneNumber);
+
     return BaseResponse.created(
       res,
       "Contact created successfully",
