@@ -3,6 +3,7 @@ import BaseResponse from "../../../utils/responses";
 import Contact from "../models/contact-models";
 import AuthenticatedRequest from "../../../utils/helpers/authenticated-request";
 import BloomFilterManager from "../../../config/bloom-filter/bloom-filter-mapper";
+import ContactManager from "../../contactManager/contact-manager";
 
 export const createContactService = async (
   req: AuthenticatedRequest,
@@ -19,6 +20,11 @@ export const createContactService = async (
       return BaseResponse.validationError(res, "Phone Number is required");
     if (!email) return BaseResponse.validationError(res, "Email is required");
 
+    const bloomFilter = BloomFilterManager.getOrCreateBloomFilter("CONTACT");
+    await bloomFilter.add(phoneNumber);
+
+    ContactManager.getInstance().addContact(req.token.userId, phoneNumber);
+
     const contactData = {
       phoneNumber: phoneNumber,
       firstName: firstName,
@@ -26,11 +32,8 @@ export const createContactService = async (
       email: email,
       userId: req.token.userId,
     };
-
+    
     const newContact = await Contact.create(contactData);
-
-    const bloomFilter = BloomFilterManager.getOrCreateBloomFilter("CONTACT");
-    await bloomFilter.add(phoneNumber);
 
     return BaseResponse.created(
       res,
